@@ -9,5 +9,5 @@ path=($HOME/.local/bin $path)
 ## use $TTY is a much faster trick: https://github.com/romkatv/powerlevel10k/#how-do-i-export-gpg_tty-when-using-instant-prompt
 export GPG_TTY=$TTY
 
-[[ ! $XDG_CONFIG_HOME ]] && export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)
+# [[ ! $XDG_CONFIG_HOME ]] && export $(/usr/lib/systemd/user-environment-generators/30-systemd-environment-d-generator)
 
