@@ -1,9 +1,18 @@
+# Start tmux on every shell login.
+# Everything you see in your terminal is printed by tmux. 
+# if you type exit or press Ctrl+D, you won't end up in another shell.
+# https://github.com/romkatv/powerlevel10k/issues/1203
+if [ -z "$TMUX" ]; then
+    exec tmux new-session -A -s workspace
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 # sadly the author seems not likely to move this file to a floder under ~/.cache
 # see: https://github.com/romkatv/powerlevel10k/issues/1817
 # see: https://github.com/romkatv/powerlevel10k/issues/1561
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] {
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 }
@@ -77,7 +86,7 @@ if [[ -n $SSH_CONNECTION ]] {
 }
 # }}}
 
-# TMUX {{{1
+# p10k {{{1
 if [[ $TERM != linux ]] {
     source $ZPLUGINDIR/powerlevel10k/powerlevel10k.zsh-theme
 
@@ -87,11 +96,13 @@ if [[ $TERM != linux ]] {
     # https://wiki.archlinux.org/title/Tmux#Start_tmux_on_every_shell_login
     # if tmux is executable and not inside a tmux session, then try to attach.
     # if attachment fails, start a new session
-    [[ -x $(command -v tmux) ]] \
-        && [[ -z $TMUX ]] \
-        && { tmux attach || tmux; } >/dev/null 2>&1
+    # [[ -x $(command -v tmux) ]] \
+    #     && [[ -z $TMUX ]] \
+    #     && { exec tmux new-session -A -s workspace; } 
+
 }
 # }}}
+
 
 ## Plugins {{{1
 plugins=(
@@ -164,3 +175,5 @@ bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
 # completion in the middle of a line
 bindkey '^i' expand-or-complete-prefix
+
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
